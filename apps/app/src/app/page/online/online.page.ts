@@ -38,8 +38,8 @@ export class OnlinePage implements OnInit {
 		this.games.update((games) => {
 			const game = games?.find((game) => game.uuid);
 
-			if (game && data.data?.joinGame.participants) {
-				game.participants = data.data?.joinGame.participants;
+			if (game !== undefined) {
+				game.participants = data.data.joinGame.participants;
 			}
 
 			return games;

@@ -40,8 +40,8 @@ describe('IsUniqueUserPropRule', () => {
 
 			expect(result).toStrictEqual(true);
 
-			expect(userEntityRepository.getOne).toBeCalledTimes(1);
-			expect(userEntityRepository.getOne).toBeCalledWith({ username: 'admin' });
+			expect(userEntityRepository.getOne).toHaveBeenCalledTimes(1);
+			expect(userEntityRepository.getOne).toHaveBeenCalledWith({ username: 'admin' });
 		});
 
 		it('should return False when UserService.getOne return a UserEntity', async () => {
@@ -51,8 +51,8 @@ describe('IsUniqueUserPropRule', () => {
 
 			expect(result).toStrictEqual(false);
 
-			expect(userEntityRepository.getOne).toBeCalledTimes(1);
-			expect(userEntityRepository.getOne).toBeCalledWith({ username: 'admin' });
+			expect(userEntityRepository.getOne).toHaveBeenCalledTimes(1);
+			expect(userEntityRepository.getOne).toHaveBeenCalledWith({ username: 'admin' });
 		});
 	});
 

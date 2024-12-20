@@ -7,7 +7,7 @@ import { BaseException } from '../exception/base.exception';
 @Catch(HttpException, BaseException)
 export class HttpExceptionFilter implements ExceptionFilter {
 	catch(exception: HttpException, host: ArgumentsHost) {
-		if (host.getType() === 'http') {
+		if ('http' === host.getType()) {
 			const ctx = host.switchToHttp();
 			const response = ctx.getResponse<Response>();
 			const request = ctx.getRequest<Request>();

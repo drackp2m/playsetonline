@@ -12,8 +12,7 @@ export class AppService {
 	@Cron('*/5 * * * *')
 	async handleCron() {
 		const apiConfig = this.configService.api;
-		const showPort = apiConfig.environment !== 'production' && apiConfig.port;
-		const port = showPort ? `:${apiConfig.port}` : '';
+		const port = 'production' !== apiConfig.environment ? `:${apiConfig.port}` : '';
 		const apiBaseUrl = `${apiConfig.protocol}://${apiConfig.domain}${port}/graphql`;
 
 		const body = {

@@ -3,6 +3,7 @@
 	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"sourceRoot": "apps/api/src",
 	"projectType": "application",
+	"tags": [],
 	"targets": {
 		"build": {
 			"executor": "@nx/webpack:webpack",
@@ -25,8 +26,10 @@
 		"serve": {
 			"executor": "@nx/js:node",
 			"defaultConfiguration": "development",
+			"dependsOn": ["build"],
 			"options": {
-				"buildTarget": "api:build"
+				"buildTarget": "api:build",
+				"runBuildTargetDependencies": false
 			},
 			"configurations": {
 				"development": {
@@ -36,10 +39,6 @@
 					"buildTarget": "api:build:production"
 				}
 			}
-		},
-		"lint": {
-			"executor": "@nx/eslint:lint",
-			"outputs": ["{options.outputFile}"]
 		},
 		"test": {
 			"executor": "@nx/jest:jest",
@@ -57,6 +56,5 @@
 				"testMatch": ["**/*.test.ts"]
 			}
 		}
-	},
-	"tags": []
+	}
 }

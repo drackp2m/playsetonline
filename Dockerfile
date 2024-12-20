@@ -1,4 +1,4 @@
-FROM node:23.1-alpine3.20 AS base
+FROM node:22-alpine3.20 AS base
 
 RUN apk add --no-cache build-base python3 openssl
 

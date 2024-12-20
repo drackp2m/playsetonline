@@ -14,7 +14,6 @@ describe('DateFaker', () => {
 	});
 
 	it('should be defined', () => {
-		// console.log(process.env.NODE_ENV);
 		expect(util).toBeDefined();
 	});
 

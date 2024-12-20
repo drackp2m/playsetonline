@@ -14,18 +14,10 @@ import { MigrationHandler } from './migration-handler';
 
 export class GenericRepository<T extends DBSchema> {
 	private dbName = 'play_set_online';
-	private dbPromise: Promise<IDBPDatabase<T>>;
+	private dbPromise = this.getDbPromise();
 	private currentTransaction: IDBPTransaction<T, StoreNames<T>[], 'readwrite' | 'readonly'> | null =
 		null;
 	protected migrationHandler = new MigrationHandler<T>();
-
-	constructor() {
-		this.dbPromise = openDB<T>(this.dbName, this.migrationHandler.getLatestVersion(), {
-			upgrade: (db, oldVersion, newVersion, transaction) => {
-				this.migrationHandler.applyMigrations(db, oldVersion, newVersion, transaction);
-			},
-		});
-	}
 
 	async beginTransaction(storeNames: StoreNames<T>[]): Promise<void> {
 		const db = await this.dbPromise;
@@ -100,5 +92,13 @@ export class GenericRepository<T extends DBSchema> {
 		}
 
 		return result;
+	}
+
+	private getDbPromise(): Promise<IDBPDatabase<T>> {
+		return openDB<T>(this.dbName, this.migrationHandler.getLatestVersion(), {
+			upgrade: (db, oldVersion, newVersion, transaction) => {
+				this.migrationHandler.applyMigrations(db, oldVersion, newVersion, transaction);
+			},
+		});
 	}
 }
