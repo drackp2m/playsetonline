@@ -29,7 +29,7 @@ describe('JoinGameUseCase', () => {
 			defineConfig({
 				dbName: ':memory:',
 				entities: [Game, GameParticipant],
-				dynamicImportProvider: id => import(id),
+				dynamicImportProvider: (id) => import(id),
 			}),
 		);
 

@@ -52,7 +52,7 @@ export class EditableDate extends Date {
 	}
 
 	private fixValue(attribute: ManipulationDateAttribute, value: number, replace: boolean): number {
-		if (replace && attribute === 'month') {
+		if (replace && 'month' === attribute) {
 			return value - 1;
 		}
 

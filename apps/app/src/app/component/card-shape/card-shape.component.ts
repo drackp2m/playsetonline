@@ -19,14 +19,14 @@ export class CardShapeComponent {
 	});
 
 	horizontal = input(false, {
-		transform: (value: boolean | string) => (typeof value === 'string' ? value === '' : value),
+		transform: (value: boolean | string) => ('string' === typeof value ? '' === value : value),
 	});
 
 	basicMask = computed(() => {
 		const shape = this.shape();
 		let shading = this.shading();
 
-		shading = shading === 'striped' ? 'outlined' : shading;
+		shading = 'striped' === shading ? 'outlined' : shading;
 
 		return this.getUrl(`${shape}-${shading}`);
 	});
@@ -35,13 +35,13 @@ export class CardShapeComponent {
 		const shading = this.shading();
 		const shape = this.shape();
 
-		return shading === 'striped' ? this.getUrl(`${shape}-solid`) : undefined;
+		return 'striped' === shading ? this.getUrl(`${shape}-solid`) : undefined;
 	});
 
 	stripedMask = computed(() => {
 		const shading = this.shading();
 
-		return shading === 'striped' ? this.getUrl('strips') : undefined;
+		return 'striped' === shading ? this.getUrl('strips') : undefined;
 	});
 
 	private getUrl(iconName: string): string {

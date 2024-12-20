@@ -25,7 +25,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
 	private readonly authStoreLoadingFinished$ = toObservable(this.authStore.isLoading).pipe(
 		skip(1),
-		filter((value) => value === false),
+		filter((value) => !value),
 	);
 
 	intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -33,7 +33,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
 		const urlsToIgnore = [this.API_REGISTER_URL, this.API_LOGIN_URL, this.API_REFRESH_SESSION_URL];
 
-		if (tokensAreValid === false || urlsToIgnore.some((url) => req.url.includes(url))) {
+		if (!tokensAreValid || urlsToIgnore.some((url) => req.url.includes(url))) {
 			return next.handle(req);
 		}
 
@@ -56,15 +56,15 @@ export class AuthInterceptor implements HttpInterceptor {
 		const isHttpErrorResponse = event instanceof HttpErrorResponse;
 		const isHttpResponse = event instanceof HttpResponse;
 
-		if (isHttpErrorResponse === false && isHttpResponse === false) {
+		if (!isHttpErrorResponse && !isHttpResponse) {
 			return of(event as HttpResponse<unknown>);
 		}
 
 		const isUnauthorizedError = isHttpErrorResponse
-			? event.status === 401
-			: event.body?.errors?.[0]?.message === 'Unauthorized';
+			? 401 === event.status
+			: 'Unauthorized' === event.body?.errors?.[0]?.message;
 
-		if (isUnauthorizedError && this.authStore.tokensAreValid() === true) {
+		if (isUnauthorizedError && this.authStore.tokensAreValid()) {
 			return this.retryRequest(req, next, event as HttpResponse<unknown>);
 		}
 
@@ -83,7 +83,7 @@ export class AuthInterceptor implements HttpInterceptor {
 			switchMap(() => {
 				const tokensAreValid = this.authStore.tokensAreValid();
 
-				if (tokensAreValid === false) {
+				if (!tokensAreValid) {
 					this.router.navigate(['/login']);
 				}
 
@@ -91,7 +91,7 @@ export class AuthInterceptor implements HttpInterceptor {
 			}),
 		);
 
-		if (event !== undefined && isAuthStoreLoading === false) {
+		if (event !== undefined && !isAuthStoreLoading) {
 			this.authStore.tryToRefreshTokens();
 		}
 

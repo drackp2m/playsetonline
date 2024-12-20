@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit, effect, inject, signal } from '@angular/core';
+import { Component, OnInit, effect, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { SendPingGQL } from '@playsetonline/apollo-definitions';
@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
 	messages = signal<string[]>([]);
 
 	constructor() {
-		this.userStore.fetchData();
+		this.fetchUserStoreData();
 
 		effect(() => {
 			const pingValue = pingValueConfig();
@@ -60,5 +60,9 @@ export class AppComponent implements OnInit {
 				]);
 			}
 		});
+	}
+
+	private fetchUserStoreData() {
+		this.userStore.fetchData();
 	}
 }

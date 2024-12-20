@@ -18,10 +18,10 @@ describe('DateFaker', () => {
 	});
 
 	describe('createdAt', () => {
-		it('should return null when nothing is passed', () => {
+		it('should return a valid date', () => {
 			const result = util.createdAt();
 
-			expect(result).toStrictEqual(null);
+			expect(result).toBeInstanceOf(Date);
 		});
 
 		it('should return null when invalid `since` date is passed', () => {
@@ -68,10 +68,10 @@ describe('DateFaker', () => {
 	});
 
 	describe('expiresOn', () => {
-		it('should return null when nothing is passed', () => {
+		it('should return a valid Date', () => {
 			const result = util.expiresOn();
 
-			expect(result).toStrictEqual(null);
+			expect(result).toBeInstanceOf(Date);
 		});
 
 		it('should return null when invalid `until` date is passed', () => {

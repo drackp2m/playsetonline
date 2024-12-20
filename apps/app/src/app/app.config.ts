@@ -38,7 +38,7 @@ export const pingValue = computed(() => {
 
 	const ping = pongTimestampValue - pingTimestampValue;
 
-	return ping > 0 ? ping : undefined;
+	return 0 < ping ? ping : undefined;
 });
 
 const apolloConfig = (): ApolloClientOptions<unknown> => {
@@ -68,7 +68,7 @@ const apolloConfig = (): ApolloClientOptions<unknown> => {
 		({ query }) => {
 			const { kind, operation } = getMainDefinition(query) as OperationDefinitionNode;
 
-			return kind === 'OperationDefinition' && operation === 'subscription';
+			return 'OperationDefinition' === kind && 'subscription' === operation;
 		},
 		ws,
 		http,

@@ -19,7 +19,7 @@ export class RegisterUseCase {
 			$or: [
 				{ username: registerRequest.username },
 				{
-					...(registerRequest.email ? { email: registerRequest.email } : {}),
+					...(registerRequest.email !== undefined ? { email: registerRequest.email } : {}),
 				},
 			],
 		});

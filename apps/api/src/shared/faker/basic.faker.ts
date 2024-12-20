@@ -1,6 +1,8 @@
+import { randomNumberBetween } from '@playsetonline/lib/generator/random-number-between';
+
 export class BasicFaker {
 	static boolean(): boolean {
-		return Math.random() < 0.5;
+		return 0.5 > randomNumberBetween(0, 1);
 	}
 
 	static randomEnum<T extends object>(enumInstance: T): T[keyof T] {
@@ -12,7 +14,7 @@ export class BasicFaker {
 			throw new Error('Enum is empty');
 		}
 
-		const randomIndex = Math.floor(Math.random() * enumKeys.length);
+		const randomIndex = randomNumberBetween(0, enumKeys.length - 1);
 		const randomEnumKey = enumKeys[randomIndex];
 
 		const enumKey = randomEnumKey ?? firstEnumKey;
@@ -23,12 +25,12 @@ export class BasicFaker {
 	private getEnumKeys<T extends object>(enumInstance: T): Array<keyof T> {
 		const enumKeys = Object.keys(enumInstance) as Array<keyof T>;
 
-		if (enumKeys.length % 2 !== 0) {
+		if (0 !== enumKeys.length % 2) {
 			return enumKeys;
 		}
 
 		let isBasicEnum = true;
-		const enumValues = Object.values(enumInstance) as string[];
+		const enumValues = Object.values(enumInstance);
 
 		for (let index = 0; index < enumKeys.length / 2; index++) {
 			if (enumKeys[enumKeys.length / 2 + index] !== enumValues[index]) {
