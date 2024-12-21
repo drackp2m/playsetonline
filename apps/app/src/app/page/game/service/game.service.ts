@@ -1,7 +1,7 @@
-/* eslint-disable max-lines */
 import { Injectable } from '@angular/core';
 
 import { CardColor, CardShading, CardShape } from '@playsetonline/api-definitions';
+import { randomNumberBetween } from '@playsetonline/lib';
 
 import { Card } from '../../../definition/card.interface';
 import { AddCardsToBoardError, AddCardsToBoardException } from '../error/add-cards-to-board.error';
@@ -46,11 +46,11 @@ export class GameService {
 		selectedCards: Card[],
 	): Card[] {
 		const flatSetCards = setCards
-			.filter((set) => set.valid === true)
+			.filter((set) => set.valid)
 			.map((set) => set.cards)
 			.flat();
 
-		const removeCards = boardCards.length > 12 || flatSetCards.length + boardCards.length === 81;
+		const removeCards = 12 < boardCards.length || 81 === flatSetCards.length + boardCards.length;
 
 		let updatedBoardCards = boardCards;
 
@@ -88,11 +88,11 @@ export class GameService {
 		boardCardsCount: number,
 		remainingCardsCount: number,
 	): boolean {
-		if (remainingCardsCount === 0) {
+		if (0 === remainingCardsCount) {
 			throw new AddCardsToBoardException(AddCardsToBoardError.DECK_EMPTY);
-		} else if (boardCardsCount >= 15) {
+		} else if (15 <= boardCardsCount) {
 			throw new AddCardsToBoardException(AddCardsToBoardError.ALREADY_ADDED);
-		} else if (boardHasSet === true) {
+		} else if (boardHasSet) {
 			throw new AddCardsToBoardException(AddCardsToBoardError.HAS_SET);
 		} else {
 			return true;
@@ -102,7 +102,7 @@ export class GameService {
 	private replaceCard(boardCards: Card[], currentCard: Card, newCard: Card | null): Card[] {
 		return boardCards
 			.map((card) => (card.id === currentCard.id ? newCard : card))
-			.filter((c) => c !== null) as Card[];
+			.filter((c) => null !== c) as Card[];
 	}
 
 	private isSet(first: Card, second: Card, third: Card): boolean {
@@ -135,25 +135,10 @@ export class GameService {
 		const shape = this.randomEnum(CardShape);
 		const color = this.randomEnum(CardColor);
 		const shading = this.randomEnum(CardShading);
-		const number = this.getRandomNumber();
+		const number = randomNumberBetween(1, 3);
 		const id = `a${shape}b${color}c${shading}d${number}`;
 
 		return { id, shape, color, shading, number };
-	}
-
-	// FixMe => move this to lib
-	private getRandomNumber(): number {
-		const crypto = window.crypto;
-		const array = new Uint32Array(1);
-		crypto.getRandomValues(array);
-
-		if (!array[0]) {
-			throw new Error('Random number is not defined');
-		}
-
-		const randomNumber = (array[0] % 3) + 1;
-
-		return randomNumber;
 	}
 
 	// FixMe => move this to lib
@@ -166,7 +151,7 @@ export class GameService {
 			throw new Error('Enum is empty');
 		}
 
-		const randomIndex = this.getRandomNumberInRange(0, enumKeys.length - 1);
+		const randomIndex = randomNumberBetween(0, enumKeys.length - 1);
 		const randomEnumKey = enumKeys[randomIndex ?? 0];
 
 		const enumKey = randomEnumKey ?? firstEnumKey;
@@ -178,12 +163,12 @@ export class GameService {
 	private getEnumKeys<T extends object>(enumInstance: T): Array<keyof T> {
 		const enumKeys = Object.keys(enumInstance) as Array<keyof T>;
 
-		if (enumKeys.length % 2 !== 0) {
+		if (0 !== enumKeys.length % 2) {
 			return enumKeys;
 		}
 
 		let isBasicEnum = true;
-		const enumValues = Object.values(enumInstance) as string[];
+		const enumValues = Object.values(enumInstance);
 
 		for (let index = 0; index < enumKeys.length / 2; index++) {
 			if (enumKeys[enumKeys.length / 2 + index] !== enumValues[index]) {
@@ -192,27 +177,5 @@ export class GameService {
 		}
 
 		return isBasicEnum ? enumKeys.slice(enumKeys.length / 2) : enumKeys;
-	}
-
-	// FixMe => move this to lib
-	private getEnumValues<T extends object>(enumInstance: T): Array<T[keyof T]> {
-		const enumValues = Object.values(enumInstance) as Array<T[keyof T]>;
-
-		return enumValues;
-	}
-
-	// FixMe => move this to lib
-	private getRandomNumberInRange(min: number, max: number): number | undefined {
-		const crypto = window.crypto;
-		const array = new Uint32Array(1);
-		crypto.getRandomValues(array);
-
-		if (!array[0]) {
-			return undefined;
-		}
-
-		const randomNumber = Math.floor((array[0] / (0xffffffff + 1)) * (max - min + 1)) + min;
-
-		return randomNumber;
 	}
 }

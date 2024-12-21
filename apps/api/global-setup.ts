@@ -14,7 +14,7 @@ export default async () => {
 
 	const nxTaskTarget = process.env.NX_TASK_TARGET_TARGET;
 
-	if (nxTaskTarget && ['integrationTest'].includes(nxTaskTarget)) {
+	if (nxTaskTarget !== undefined && ['integrationTest'].includes(nxTaskTarget)) {
 		console.log('Checking for pending DB migrations...\n');
 
 		const config = await databaseConfig();
@@ -23,7 +23,7 @@ export default async () => {
 
 		const pendingMigrations = await globalThis.__MIKRO_ORM__.migrator.getPendingMigrations();
 
-		if (pendingMigrations.length !== 0) {
+		if (0 !== pendingMigrations.length) {
 			console.log(`${pendingMigrations.length} pending migration(s) found:`);
 
 			pendingMigrations.forEach((migration) => {

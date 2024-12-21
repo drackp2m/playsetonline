@@ -17,11 +17,11 @@ export class RolesGuard implements CanActivate {
 			req: Request & { user: User };
 		}>().req.user;
 
-		if (!user) {
+		if (!(user instanceof User)) {
 			throw new UnauthorizedException('x-jwt-access-token invalid', 'authorization');
 		}
 
-		if (roles.length === 0) {
+		if (0 === roles.length) {
 			return true;
 		}
 

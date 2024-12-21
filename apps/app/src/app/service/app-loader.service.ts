@@ -18,18 +18,15 @@ export class AppLoaderService {
 		return this.checkLoadFinish();
 	});
 
-	readonly removeDeprecatedDatabase = signal<boolean>(false);
+	readonly removeDeprecatedDatabases = signal<boolean>(false);
 
 	constructor() {
-		this.migrationHandler.removeDeprecatedDatabase().then(() => {
-			this.removeDeprecatedDatabase.set(true);
-		});
+		this.startRemoveDeprecatedDatabases();
 	}
 
 	private checkLoadFinish(): boolean {
 		const loadFinish =
-			this.stopCheck ||
-			(this.userLoaded() && this.isGameLoaded() && this.isRemoveDatabaseLoading());
+			this.stopCheck || (this.userLoaded() && this.isGameLoaded() && this.isRemoveDatabaseFinish());
 
 		if (loadFinish) {
 			this.stopCheck = true;
@@ -41,23 +38,24 @@ export class AppLoaderService {
 	private userLoaded(): boolean {
 		const isUserLoading = this.userStore.isLoading();
 
-		return isUserLoading === false;
+		return !isUserLoading;
 	}
 
 	private isGameLoaded(): boolean {
-		const gameLoading = this.gameOfflineStore.loading();
+		const gameLoading = this.gameOfflineStore.isLoading();
 
-		return gameLoading === false;
-
-		const gameBoardCards = this.gameOfflineStore.boardCards();
-		const gameSetCards = this.gameOfflineStore.validSets();
-
-		return gameBoardCards.length !== 0 || gameSetCards.length !== 0;
+		return !gameLoading;
 	}
 
-	private isRemoveDatabaseLoading(): boolean {
-		const isRemoveDatabaseLoading = this.removeDeprecatedDatabase();
+	private isRemoveDatabaseFinish(): boolean {
+		const removeDeprecatedDatabase = this.removeDeprecatedDatabases();
 
-		return isRemoveDatabaseLoading === true;
+		return removeDeprecatedDatabase;
+	}
+
+	private startRemoveDeprecatedDatabases(): void {
+		this.migrationHandler.removeDeprecatedDatabase().then(() => {
+			this.removeDeprecatedDatabases.set(true);
+		});
 	}
 }

@@ -27,7 +27,7 @@ export class AuthStore extends signalStore(
 	}
 
 	markTokensAs(status: 'valid' | 'invalid'): void {
-		patchState(this, { tokensAreValid: status === 'valid', isLoading: false });
+		patchState(this, { tokensAreValid: 'valid' === status, isLoading: false });
 	}
 
 	async tryToRefreshTokens(): Promise<void> {

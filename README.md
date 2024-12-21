@@ -1,73 +1,81 @@
-# Welcome to **Set Online**
+# NewClean
 
-<img src="apps/app/src/assets/icon.svg" alt="Set Online Logo" width="200"/>
+<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
 
-## Development server
+✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
 
-- 📋 Copy `.env.example` and rename it to `.env` executing `cp .env.example .env`
+[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/tutorials/angular-monorepo-tutorial?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
 
-#### 1. With DevContainer
+## Finish your CI setup
 
-- 📋 Generate Dev Containers docker-compose with `cp .devcontainer/docker-compose.yml.example .devcontainer/docker-compose.yml`
-- 📝 Edit build arg with the result of the following command `echo 'USER_GID:' $(id -g) && echo 'USER_UID:' $(id -u)`
-- 🐋 Run VSCode Dev Container command `Reopen in Container`
+[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/WV8LKR1to0)
 
-You can also view node execution logs by running `node --run logs` inside the container.
+## Run tasks
 
-Or if you prefer to see them from a terminal on the host, execute `docker logs playsetonline -f -n 100`.
+To run the dev server for your app, use:
 
-To restart the Node service, run `pm2 kill` to stop it and `pm2-runtime start ecosystem.config.js` to start it again.
+```sh
+npx nx serve app
+```
 
-The latter command shows the logs after startup (and they will still be output by `/dev/stdout` as well). But if you prefer to start the process "silently", you can run `pm2 start ecosystem.config.js`. This will still show the logs in both `Docker` and `pm2`.
+To create a production bundle:
 
-#### 2. In your machine
+```sh
+npx nx build app
+```
 
-- ⚙️ Run `docker compose up -d` and wait for it to finish (be patient)
-- 📦 Install dependencies executing command `npm ci`
-- 🛠️ Install extensions listed by running `Show recommended extensions` on VSCode
-- 🚀 Execute `node --run start`
+To see all available targets to run for a project, run:
 
-To view node process logs you can run `docker logs playsetonline -f -n 100`.
+```sh
+npx nx show project app
+```
 
----
+These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
 
-At this point you should be able to navigate to:
+[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
-- 👹 Apollo Studio on https://localhost:3000/graphql
-- 🧜🏻‍♀️ Frontend on https://localhost:4200
+## Add new projects
 
-## Certificates
+While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
 
-This project has been designed to work with self-signed certificates in a development environment.
+Use the plugin's generator to create new projects.
 
-To create these certificates execute the command `./utils/generate-ssl.sh`. Now, restart the Docker container (or the application launch command).
+To generate a new application, use:
 
-## Migrations
+```sh
+npx nx g @nx/angular:app demo
+```
 
-Using the mikro-orm migration system, three `npm` commands are available:
+To generate a new library, use:
 
-- 🔍 Check if there are pending migrations using `node --run migration:check`
-- 📦 Create a migration that synchronizes all entities using `node --run migration:create`
-- 🏗️ Execute migrations to synchronize the database using `node --run migration:execute`
+```sh
+npx nx g @nx/angular:lib mylib
+```
 
-## Library creation
+You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
 
-If you miss having any specific purpose libraries, feel free to create them by running the command `nx generate @nx/workspace:lib new-library-name`.
+[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
-This will create all the necessary files and add a `path` to the `tsconfig.base.json` file, with the necessary settings so that it is accessible in all the projects in the monorepository.
+[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
-## Understand commitizen
+## Install Nx Console
 
-This project uses [commitizen](https://commitizen-tools.github.io/commitizen/) to help generate standardized confirmation messages. On top of this there is [cz-git](https://cz-git.qbb.sh) to improve the interactive commitizen command line tool. Finally, we have [commitlint](https://commitlint.js.org) to help us define the configuration, which together with the [@commitlint-config-nx-scopes](https://github.com/conventional-changelog/commitlint/tree/master/@commitlint/config-nx-scopes) shareable commitlint config enforcing to use `nx project and workspace` names as scopes.
+Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
 
-This means that there are now rules to follow when writing a commit message. These rules can be found in the file `.commitlintrc.js`.
+[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
-To learn the rules, you can start writing your first commits using the interactive `cz-git` command line tool by running the `cz` or `git cz` command. Happy commit!
+## Useful links
 
-## Understand this workspace
+Learn more:
 
-Run `nx graph` to see a diagram of the dependencies of the projects.
+- [Learn more about this workspace setup](https://nx.dev/getting-started/tutorials/angular-monorepo-tutorial?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
-## Further help
+And join the Nx community:
 
-Visit the [Nx Documentation](https://nx.dev) to learn more.
+- [Discord](https://go.nx.dev/community)
+- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
+- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
+- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)

@@ -22,7 +22,7 @@ async function bootstrap(): Promise<void> {
 	app.useGlobalFilters(BootstrapHelper.exceptionsFilter);
 	app.enableCors({
 		credentials: true,
-		origin: (origin, callback) => {
+		origin: (origin: string | undefined, callback) => {
 			if (origin === undefined || allowedDomains.includes(origin)) {
 				callback(null, true);
 			} else {
@@ -34,7 +34,7 @@ async function bootstrap(): Promise<void> {
 	});
 	app.use(cookieParser(apiConfig.cookieSecret));
 
-	const port = apiConfig.port ?? 3000;
+	const port = apiConfig.port;
 
 	await app.listen(port, () => BootstrapHelper.logAppBootstrap(apiConfig));
 }

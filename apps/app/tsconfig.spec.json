@@ -2,10 +2,10 @@
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
 		"outDir": "../../dist/out-tsc",
-		"module": "CommonJS",
-		"target": "ES2016",
+		"module": "commonjs",
+		"target": "es2016",
 		"types": ["jest", "node"]
 	},
-	"files": ["src/test-setup.ts"],
-	"include": ["jest.config.ts", "src/**/*.test.ts", "src/**/*.spec.ts", "src/**/*.d.ts"]
+	"files": ["_src/test-setup.ts"],
+	"include": ["jest.config.ts", "_src/**/*.test.ts", "_src/**/*.spec.ts", "_src/**/*.d.ts"]
 }

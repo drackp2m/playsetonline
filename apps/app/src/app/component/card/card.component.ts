@@ -19,7 +19,7 @@ export class CardComponent {
 	selected = input(false);
 	highlighted = input(false);
 	vertical = input(false, {
-		transform: (value: boolean | string) => (typeof value === 'string' ? value === '' : value),
+		transform: (value: boolean | string) => ('string' === typeof value ? '' === value : value),
 	});
 
 	repetitions = computed(() => {

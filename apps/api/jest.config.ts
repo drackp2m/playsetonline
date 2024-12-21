@@ -1,13 +1,8 @@
-// import { readFileSync } from 'fs';
-
-import type { Config } from 'jest';
 // const swcConfig = JSON.parse(readFileSync(`${__dirname}/.swcrc`, 'utf-8'));
 
-const config: Config = {
+export default {
 	displayName: 'api',
 	preset: '../../jest.preset.js',
-	coverageProvider: 'v8',
-	coveragePathIgnorePatterns: [],
 	testEnvironment: 'node',
 	globalSetup: '<rootDir>/global-setup.ts',
 	globalTeardown: '<rootDir>/global-teardown.ts',
@@ -18,8 +13,5 @@ const config: Config = {
 	},
 	moduleFileExtensions: ['ts', 'js', 'html'],
 	coverageDirectory: '../../coverage/apps/api',
-	coverageReporters: ['html', 'lcov', ['text', { skipFull: true }], 'text-summary'],
 	clearMocks: true,
 };
-
-export default config;

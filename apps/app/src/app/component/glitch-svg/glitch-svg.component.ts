@@ -1,6 +1,8 @@
 import { NgStyle } from '@angular/common';
 import { Component, OnInit, computed, input } from '@angular/core';
 
+import { randomNumberBetween } from '@playsetonline/lib';
+
 @Component({
 	selector: 'app-glitch-svg',
 	templateUrl: './glitch-svg.component.html',
@@ -29,13 +31,10 @@ export class GlitchSvgComponent implements OnInit {
 		this.addFpsCssVariable();
 		this.addGlitchEffectCssVariables();
 
+		// FixMe => prevent infinite loop
 		setInterval(() => {
 			this.addGlitchEffectCssVariables();
 		}, this.duration() * 2000);
-	}
-
-	private getRandomNumber(max: number): number {
-		return Math.round(Math.random() * (max - 0) + 0);
 	}
 
 	private addCssVariable(name: string, value: number): void {
@@ -56,16 +55,16 @@ export class GlitchSvgComponent implements OnInit {
 
 	private addGlitchEffectCssVariables(): void {
 		for (let i = 0; i <= this.glitchSteps; i++) {
-			const leftTop = this.getRandomNumber(100);
-			const leftBottom = this.getRandomNumber(100 - leftTop);
+			const leftTop = randomNumberBetween(0, 100);
+			const leftBottom = randomNumberBetween(0, 100 - leftTop);
 			// const leftTop = 20;
 			// const leftBottom = 55;
 
 			this.addCssVariable(`left-top-frame-${i}`, leftTop);
 			this.addCssVariable(`left-bottom-frame-${i}`, leftBottom);
 
-			const rightTop = 100 - this.getRandomNumber(100);
-			const rightBottom = 100 - this.getRandomNumber(100 - rightTop);
+			const rightTop = 100 - randomNumberBetween(0, 100);
+			const rightBottom = 100 - randomNumberBetween(0, 100 - rightTop);
 			// const rightTop = 40;
 			// const rightBottom = 80;
 
@@ -83,8 +82,8 @@ export class GlitchSvgComponent implements OnInit {
 			this.addCssVariable(`overlap-bottom-frame-${i}`, overlapBottom);
 
 			this.addCssVariable('glitch-offset', this.offset());
-			this.addCssVariable(`random-z-index-frame-${i}`, this.getRandomNumber(2));
-			this.addCssVariable(`random-glitch-offset-frame-${i}`, this.getRandomNumber(this.offset()));
+			this.addCssVariable(`random-z-index-frame-${i}`, randomNumberBetween(0, 2));
+			this.addCssVariable(`random-glitch-offset-frame-${i}`, randomNumberBetween(0, this.offset()));
 		}
 	}
 

@@ -23,17 +23,21 @@ export class GenerateGameCardsUseCase {
 
 					number += `:${CardProperties['number']}${numberKey}:`;
 
-					cardShadings.forEach((_shadingValue, shadingKey) => {
-						let shading = number;
-
-						shading += `:${CardProperties['shading']}${shadingKey}:`;
-
-						cards.push(shading);
-					});
+					this.generateCardShadings(number, cards);
 				});
 			});
 		});
 
 		return cards;
+	}
+
+	private generateCardShadings(currentName: string, currentCardsArray: string[]): void {
+		cardShadings.forEach((_shadingValue, shadingKey) => {
+			let updatedName = currentName;
+
+			updatedName += `:${CardProperties['shading']}${shadingKey}:`;
+
+			currentCardsArray.push(updatedName);
+		});
 	}
 }

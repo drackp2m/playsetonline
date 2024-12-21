@@ -20,7 +20,7 @@ export class CustomRepository<T extends CustomBaseEntity<T>> {
 	): Promise<T> {
 		const user = await this.entityManager.fork().findOne(this.entityName, query, options);
 
-		if (user === null) {
+		if (null === user) {
 			const entityName = this.entityName.replace('Entity', '').toLocaleLowerCase();
 			throw new NotFoundException('not exists', entityName);
 		}

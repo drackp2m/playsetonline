@@ -2,7 +2,7 @@
 	"name": "app",
 	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"projectType": "application",
-	"prefix": "playsetonline",
+	"prefix": "app",
 	"sourceRoot": "apps/app/src",
 	"tags": [],
 	"targets": {
@@ -13,17 +13,17 @@
 				"outputPath": "dist/apps/app",
 				"index": "apps/app/src/index.html",
 				"browser": "apps/app/src/main.ts",
+				"polyfills": [],
 				"tsConfig": "apps/app/tsconfig.app.json",
 				"inlineStyleLanguage": "scss",
 				"assets": [
-					"apps/app/src/assets",
-					"apps/app/src/favicon.ico",
-					"apps/app/src/favicon.svg",
-					"apps/app/src/manifest.webmanifest",
-					"apps/app/src/ngsw-config.json"
+					{
+						"glob": "**/*",
+						"input": "apps/app/public"
+					}
 				],
 				"styles": ["apps/app/src/styles.scss"],
-				"aot": true
+				"scripts": []
 			},
 			"configurations": {
 				"production": {
@@ -35,12 +35,11 @@
 						},
 						{
 							"type": "anyComponentStyle",
-							"maximumWarning": "2kb",
+							"maximumWarning": "4kb",
 							"maximumError": "8kb"
 						}
 					],
-					"outputHashing": "all",
-					"serviceWorker": "apps/app/src/ngsw-config.json"
+					"outputHashing": "all"
 				},
 				"development": {
 					"optimization": false,
@@ -51,8 +50,7 @@
 							"replace": "apps/app/src/environments/environment.ts",
 							"with": "apps/app/src/environments/environment.development.ts"
 						}
-					],
-					"serviceWorker": "apps/app/src/ngsw-config.json"
+					]
 				}
 			},
 			"defaultConfiguration": "production"
@@ -65,6 +63,7 @@
 				},
 				"development": {
 					"buildTarget": "app:build:development",
+					"port": 4200,
 					"hmr": true,
 					"liveReload": false,
 					"host": "0.0.0.0",
@@ -74,10 +73,7 @@
 					"sslCert": "certs/self-signed.crt"
 				}
 			},
-			"defaultConfiguration": "development",
-			"options": {
-				"port": 4200
-			}
+			"defaultConfiguration": "development"
 		},
 		"extract-i18n": {
 			"executor": "@angular-devkit/build-angular:extract-i18n",
@@ -86,8 +82,7 @@
 			}
 		},
 		"lint": {
-			"executor": "@nx/eslint:lint",
-			"outputs": ["{options.outputFile}"]
+			"executor": "@nx/eslint:lint"
 		},
 		"test": {
 			"executor": "@nx/jest:jest",
@@ -100,7 +95,9 @@
 			"executor": "@nx/web:file-server",
 			"options": {
 				"buildTarget": "app:build",
-				"staticFilePath": "dist/apps/app/browser"
+				"port": 4200,
+				"staticFilePath": "dist/apps/app/browser",
+				"spa": true
 			}
 		}
 	}

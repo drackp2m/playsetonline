@@ -48,7 +48,7 @@ class EnvironmentVariables {
 	API_DOMAIN!: string;
 
 	@IsNumber()
-	API_PORT?: number;
+	API_PORT!: number;
 
 	@IsString()
 	@IsNotEmpty()
@@ -110,7 +110,7 @@ export function validate(config: Record<string, unknown>): EnvironmentVariables 
 		skipMissingProperties: true,
 	});
 
-	if (errors.length > 0) {
+	if (0 < errors.length) {
 		throw new Error(errors.toString());
 	}
 

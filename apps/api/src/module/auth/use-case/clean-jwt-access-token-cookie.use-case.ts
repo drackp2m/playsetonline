@@ -5,7 +5,7 @@ export class CleanJwtAccessTokenCookieUseCase {
 	execute(accessToken: string): string {
 		const accessTokenWithoutSecurePrefix = decodeURIComponent(accessToken).split(':')[1];
 
-		if (!accessTokenWithoutSecurePrefix) {
+		if (accessTokenWithoutSecurePrefix === undefined) {
 			return accessToken;
 		}
 

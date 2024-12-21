@@ -25,11 +25,11 @@ describe('JoinGameUseCase', () => {
 	jest.spyOn(GenerateNowDateUseCase.prototype, 'execute').mockReturnValue(new Date());
 
 	beforeAll(async () => {
-		await MikroORM.init(
+		MikroORM.initSync(
 			defineConfig({
-				clientUrl: 'postgresql://user:pass@localhost/db_name',
-				entities: ['apps/api/src/module/**/*.entity.ts'],
-				connect: false,
+				dbName: ':memory:',
+				entities: [Game, GameParticipant],
+				dynamicImportProvider: (id) => import(id),
 			}),
 		);
 

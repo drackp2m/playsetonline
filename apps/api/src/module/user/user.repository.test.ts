@@ -38,7 +38,7 @@ describe('UserRepository', () => {
 	});
 
 	describe('getOne', () => {
-		it('throw NotFoundException when user not exists', async () => {
+		it('throw NotFoundException when user not exists', () => {
 			const searchedUser = userRepository.getOne({ username: 'drackp2m' });
 
 			expect(searchedUser).rejects.toThrow(NotFoundException);
