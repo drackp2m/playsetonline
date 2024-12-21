@@ -25,7 +25,7 @@ describe('ShuffleArrayUseCase', () => {
 			const shuffledArray = useCase.execute(originalArray);
 
 			expect(shuffledArray).toHaveLength(10);
-			expect(shuffledArray.sort()).toStrictEqual(originalArray);
+			expect([...shuffledArray].sort((a, b) => a - b)).toStrictEqual(originalArray);
 		});
 	});
 });

@@ -5,7 +5,7 @@ $glitch-duration: calc(var(--glitch-duration) * 1s);
 
 @keyframes glitch-left {
 	@for $i from 0 through $glitch-steps {
-		#{percentage($i * calc(1 / $glitch-steps))} {
+		#{math.percentage($i * calc(1 / $glitch-steps))} {
 			$top: var(--left-top-frame-#{$i});
 			$bottom: var(--left-bottom-frame-#{$i});
 
@@ -19,7 +19,7 @@ $glitch-duration: calc(var(--glitch-duration) * 1s);
 
 @keyframes glitch-right {
 	@for $i from 0 through $glitch-steps {
-		#{percentage($i * calc(1 / $glitch-steps))} {
+		#{math.percentage($i * calc(1 / $glitch-steps))} {
 			$top: var(--right-top-frame-#{$i});
 			$bottom: var(--right-bottom-frame-#{$i});
 
@@ -33,7 +33,7 @@ $glitch-duration: calc(var(--glitch-duration) * 1s);
 
 @keyframes glitch-overlap {
 	@for $i from 0 through $glitch-steps {
-		#{percentage($i * calc(1 / $glitch-steps))} {
+		#{math.percentage($i * calc(1 / $glitch-steps))} {
 			$top: var(--overlap-top-frame-#{$i});
 			$bottom: var(--overlap-bottom-frame-#{$i});
 

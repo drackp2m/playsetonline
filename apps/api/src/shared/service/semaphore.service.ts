@@ -3,7 +3,7 @@ export class SemaphoreService {
 	private queue: (() => void)[] = [];
 
 	async acquire(): Promise<void> {
-		if (this.busy === true) {
+		if (this.busy) {
 			return new Promise((resolve) => this.queue.push(resolve));
 		}
 

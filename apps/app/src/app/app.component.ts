@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
 	messages = signal<string[]>([]);
 
 	constructor() {
-		this.userStore.fetchData();
+		this.fetchUserStoreData();
 
 		effect(() => {
 			const pingValue = pingValueConfig();
@@ -60,5 +60,9 @@ export class AppComponent implements OnInit {
 				]);
 			}
 		});
+	}
+
+	private fetchUserStoreData() {
+		this.userStore.fetchData();
 	}
 }

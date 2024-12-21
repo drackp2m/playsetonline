@@ -28,9 +28,9 @@ export class GetPingFromValuesUseCase {
 	}
 
 	private getPingStatus(validPings: number): CachedPingStatus {
-		if (validPings === 1) {
+		if (1 === validPings) {
 			return CachedPingStatus.bad;
-		} else if (validPings == 2) {
+		} else if (2 === validPings) {
 			return CachedPingStatus.fair;
 		} else {
 			return CachedPingStatus.good;

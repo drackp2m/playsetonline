@@ -17,7 +17,7 @@ type GameOfflineStoreProps = {
 	selectedCards: Card[];
 	sets: OfflineGameSet[];
 	boardSet: Card[];
-	loading: boolean;
+	isLoading: boolean;
 };
 
 const initialState: GameOfflineStoreProps = {
@@ -25,7 +25,7 @@ const initialState: GameOfflineStoreProps = {
 	selectedCards: [],
 	sets: [],
 	boardSet: [],
-	loading: false,
+	isLoading: false,
 };
 
 @Injectable({
@@ -45,11 +45,11 @@ export class GameOfflineStore extends signalStore(
 	});
 
 	validSets = computed(() => {
-		return this.sets().filter((set) => set.valid === true);
+		return this.sets().filter((set) => set.valid);
 	});
 
 	invalidSets = computed(() => {
-		return this.sets().filter((set) => set.valid === false);
+		return this.sets().filter((set) => !set.valid);
 	});
 
 	cardsInDeck = computed(() => {
@@ -62,19 +62,9 @@ export class GameOfflineStore extends signalStore(
 	constructor() {
 		super();
 
-		patchState(this, { loading: true });
+		patchState(this, { isLoading: true });
 
-		this.offlineGameRepository.getInProgressGame().then((getInProgressGame) => {
-			if (getInProgressGame !== undefined) {
-				const [game, sets] = getInProgressGame;
-
-				patchState(this, { game, sets });
-
-				this.searchSetOnBoard();
-			}
-
-			patchState(this, { loading: false });
-		});
+		this.restoreInProgressGame();
 	}
 
 	async newGame(): Promise<void> {
@@ -90,14 +80,14 @@ export class GameOfflineStore extends signalStore(
 	async selectCard(card: Card): Promise<void> {
 		const game = this.game();
 
-		if (game === null) {
+		if (null === game) {
 			return;
 		}
 
 		const currentSelectedCards = this.selectedCards();
 		const selectedCards = this.gameService.toggleCardSelection(card, currentSelectedCards);
 
-		if (selectedCards.length !== 3) {
+		if (3 !== selectedCards.length) {
 			patchState(this, { selectedCards });
 		} else {
 			patchState(this, { selectedCards: [] });
@@ -138,7 +128,7 @@ export class GameOfflineStore extends signalStore(
 			const boardSet = this.boardSet();
 			const cardsInDeck = this.cardsInDeck();
 
-			if (cardsInDeck === 0 && boardSet.length === 0) {
+			if (0 === cardsInDeck && 0 === boardSet.length) {
 				game.status = OfflineGameStatus.COMPLETED;
 
 				this.offlineGameRepository.set('offline_game', game.uuid, game);
@@ -151,7 +141,7 @@ export class GameOfflineStore extends signalStore(
 	async addCardsToBoard(): Promise<void> {
 		const game = this.game();
 
-		if (game === null) {
+		if (null === game) {
 			return;
 		}
 
@@ -160,7 +150,7 @@ export class GameOfflineStore extends signalStore(
 
 		const boardCards = game.board_cards;
 		const setCards = sets.map((set) => set.cards).flat();
-		const boardHasSet = boardSet.length > 0;
+		const boardHasSet = 0 < boardSet.length;
 		const remainingCardsCount = 81 - boardCards.length - setCards.length;
 
 		const revealedCards = [...boardCards, ...setCards];
@@ -215,7 +205,7 @@ export class GameOfflineStore extends signalStore(
 	private searchSetOnBoard(): void {
 		const game = this.game();
 
-		if (game === null) {
+		if (null === game) {
 			return;
 		}
 
@@ -223,5 +213,19 @@ export class GameOfflineStore extends signalStore(
 		const boardSet = this.gameService.searchSetOnBoard(boardCards);
 
 		patchState(this, { boardSet });
+	}
+
+	private restoreInProgressGame(): void {
+		this.offlineGameRepository.getInProgressGame().then((getInProgressGame) => {
+			if (getInProgressGame !== undefined) {
+				const [game, sets] = getInProgressGame;
+
+				patchState(this, { game, sets });
+
+				this.searchSetOnBoard();
+			}
+
+			patchState(this, { isLoading: false });
+		});
 	}
 }

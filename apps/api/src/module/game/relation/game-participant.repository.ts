@@ -20,7 +20,7 @@ export class GameParticipantRepository {
 	): Promise<GameParticipant | null> {
 		const user = await this.entityManager.fork().findOne(GameParticipant, query, options);
 
-		if (user === null) {
+		if (null === user) {
 			const entityName = this.entityName.replace('Entity', '').toLocaleLowerCase();
 			throw new NotFoundException('not exists', entityName);
 		}

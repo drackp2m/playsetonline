@@ -4,23 +4,30 @@
 		"default": ["{projectRoot}/**/*", "sharedGlobals"],
 		"production": [
 			"default",
+			"!{projectRoot}/.eslintrc.json",
 			"!{projectRoot}/eslint.config.js",
 			"!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
 			"!{projectRoot}/tsconfig.spec.json",
 			"!{projectRoot}/jest.config.[jt]s",
 			"!{projectRoot}/src/test-setup.[jt]s",
-			"!{projectRoot}/test-setup.[jt]s",
-			"!{projectRoot}/cypress/**/*",
-			"!{projectRoot}/**/*.cy.[jt]s?(x)",
-			"!{projectRoot}/cypress.config.[jt]s"
+			"!{projectRoot}/test-setup.[jt]s"
 		],
-		"sharedGlobals": []
+		"sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
 	},
 	"targetDefaults": {
-		"build": {
+		"@angular-devkit/build-angular:application": {
 			"cache": true,
 			"dependsOn": ["^build"],
 			"inputs": ["production", "^production"]
+		},
+		"@nx/eslint:lint": {
+			"cache": true,
+			"inputs": [
+				"default",
+				"{workspaceRoot}/.eslintrc.json",
+				"{workspaceRoot}/.eslintignore",
+				"{workspaceRoot}/eslint.config.js"
+			]
 		},
 		"@nx/jest:jest": {
 			"cache": true,
@@ -35,29 +42,43 @@
 				}
 			}
 		},
-		"e2e": {
-			"cache": true,
-			"inputs": ["default", "^production"]
+		"e2e-ci--**/*": {
+			"dependsOn": ["^build"]
 		},
-		"@nx/eslint:lint": {
+		"@nx/esbuild:esbuild": {
 			"cache": true,
-			"inputs": ["default", "{workspaceRoot}/eslint.config.mjs", "{workspaceRoot}/eslint.config.js"]
+			"dependsOn": ["^build"],
+			"inputs": ["production", "^production"]
 		}
 	},
+	"plugins": [
+		{
+			"plugin": "@nx/playwright/plugin",
+			"options": {
+				"targetName": "e2e"
+			}
+		},
+		{
+			"plugin": "@nx/eslint/plugin",
+			"options": {
+				"targetName": "lint"
+			}
+		},
+		{
+			"plugin": "@nx/webpack/plugin",
+			"options": {
+				"buildTargetName": "build",
+				"serveTargetName": "serve",
+				"previewTargetName": "preview"
+			}
+		}
+	],
 	"generators": {
 		"@nx/angular:application": {
+			"e2eTestRunner": "playwright",
+			"linter": "eslint",
 			"style": "scss",
-			"linter": "eslint",
-			"unitTestRunner": "jest",
-			"e2eTestRunner": "cypress"
-		},
-		"@nx/angular:library": {
-			"linter": "eslint",
 			"unitTestRunner": "jest"
-		},
-		"@nx/angular:component": {
-			"style": "scss"
 		}
-	},
-	"useLegacyCache": true
+	}
 }

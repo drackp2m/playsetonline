@@ -58,7 +58,7 @@ export class NodeCacheService {
 		await this.semaphore.acquire();
 
 		try {
-			return ttl ? this.nodeCache.ttl(key, ttl) : this.nodeCache.ttl(key);
+			return 'undefined' !== typeof ttl ? this.nodeCache.ttl(key, ttl) : this.nodeCache.ttl(key);
 		} finally {
 			this.semaphore.release();
 		}

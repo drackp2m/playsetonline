@@ -2,6 +2,7 @@
 /dist
 /coverage
 /.nx/cache
+/.nx/workspace-data
 .angular
 
 libs/api-definitions/src/lib/graphql/definitions.ts

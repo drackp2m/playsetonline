@@ -11,7 +11,7 @@ import { Component } from '@angular/core';
 				<div class="wave"></div>
 				<div class="wave"></div>
 				<div class="wave"></div>
-				<img src="/assets/icon.svg" alt="logo" class="logo" />
+				<img src="icon.svg" alt="logo" class="logo" />
 			</div>
 		</div>
 	`,

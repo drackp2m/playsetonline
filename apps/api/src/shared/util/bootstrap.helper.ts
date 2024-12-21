@@ -25,7 +25,7 @@ export class BootstrapHelper {
 	static readonly nestApplicationOptions = (appConfig: ApiConfig): NestApplicationOptions => {
 		const nestApplicationOptions: NestApplicationOptions = {};
 
-		if (appConfig.environment !== 'production') {
+		if ('production' !== appConfig.environment) {
 			nestApplicationOptions.httpsOptions = {
 				key: readFileSync('certs/self-signed.key'),
 				cert: readFileSync('certs/self-signed.crt'),
@@ -42,7 +42,7 @@ export class BootstrapHelper {
 	};
 
 	static readonly logAppBootstrap = (appConfig: ApiConfig): void => {
-		const isProduction = appConfig.environment === 'production';
+		const isProduction = 'production' === appConfig.environment;
 		const port = isProduction ? '' : `:${appConfig.port}`;
 
 		const playgroundUrl = `${appConfig.protocol}://${appConfig.domain}${port}/graphql`;

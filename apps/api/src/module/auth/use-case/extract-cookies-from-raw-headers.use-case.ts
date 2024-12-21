@@ -7,7 +7,9 @@ export class ExtractCookiesFromRawHeadersUseCase {
 
 		const plainHeaderCookies = headers.get('Cookie');
 
-		return plainHeaderCookies ? this.getCookiesFromCookieHeader(plainHeaderCookies) : {};
+		return plainHeaderCookies !== undefined
+			? this.getCookiesFromCookieHeader(plainHeaderCookies)
+			: {};
 	}
 
 	private getHeadersFromPlainArray(rawHeaders: string[]): Map<string, string> {
@@ -17,7 +19,7 @@ export class ExtractCookiesFromRawHeadersUseCase {
 			const key = rawHeaders[i];
 			const value = rawHeaders[i + 1];
 
-			if (key && value) {
+			if (key !== undefined && value !== undefined) {
 				headers.set(key, value);
 			}
 		}
@@ -32,7 +34,7 @@ export class ExtractCookiesFromRawHeadersUseCase {
 			cookiesArray.reduce((obj, item) => {
 				const [key, value] = item.trim().split('=');
 
-				if (key && value) {
+				if (key !== undefined && value !== undefined) {
 					Object.assign(obj, { [key]: value });
 				}
 

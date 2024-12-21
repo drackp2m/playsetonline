@@ -33,7 +33,7 @@ export class MigrationHandler<T> {
 		{
 			version: 2,
 			apply: ({ database, oldVersion }) => {
-				if (oldVersion < 2) {
+				if (2 > oldVersion) {
 					database.createObjectStore('offline_game');
 					database.createObjectStore('offline_game_set');
 					database.createObjectStore('offline_game_event');
@@ -43,7 +43,7 @@ export class MigrationHandler<T> {
 		{
 			version: 3,
 			apply: ({ oldVersion, transaction }) => {
-				if (oldVersion < 3) {
+				if (3 > oldVersion) {
 					const offlineGameStore = transaction.objectStore('offline_game');
 					offlineGameStore.createIndex('status', 'status', { unique: false });
 				}
@@ -52,7 +52,7 @@ export class MigrationHandler<T> {
 		{
 			version: 4,
 			apply: ({ oldVersion, transaction }) => {
-				if (oldVersion < 4) {
+				if (4 > oldVersion) {
 					const offlineGameStore = transaction.objectStore('offline_game_set');
 					offlineGameStore.createIndex('game_uuid', 'game_uuid', { unique: false });
 
@@ -88,7 +88,7 @@ export class MigrationHandler<T> {
 		if ('databases' in indexedDB) {
 			const databases = await indexedDB.databases();
 			databases.forEach((database): Promise<void> | void => {
-				if (database.name && this.deprecatedDatabaseNames.includes(database.name)) {
+				if (database.name !== undefined && this.deprecatedDatabaseNames.includes(database.name)) {
 					const deletePromise = deleteDB(database.name, {
 						blocked() {
 							console.warn(`Unable to delete DataBase ${database.name}, because it is blocked`);

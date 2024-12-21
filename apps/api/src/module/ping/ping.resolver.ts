@@ -51,9 +51,7 @@ export class PingResolver {
 
 			const userUuid = _context.req.user.uuid;
 
-			payload.filter((ping) => ping.userUuid === userUuid);
-
-			return payload;
+			return payload.filter((ping) => ping.userUuid === userUuid);
 		},
 		filter(_payload, _variables, _context) {
 			return true;

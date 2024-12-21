@@ -54,7 +54,7 @@ export class GamePage {
 		effect(() => {
 			const game = this.gameOfflineStore.game();
 
-			if (game === null || game.status === OfflineGameStatus.COMPLETED) {
+			if (null === game || game.status === OfflineGameStatus.COMPLETED) {
 				this.startConfetti();
 			}
 		});
@@ -71,7 +71,7 @@ export class GamePage {
 		for (let i = 0; i < (81 - this.boardCards().length - remainingCardsInDeck) / 3; i++) {
 			const boardSet = this.boardSet();
 
-			if (boardSet.length === 0) {
+			if (0 === boardSet.length) {
 				this.addCardsToBoard();
 			}
 
@@ -97,17 +97,17 @@ export class GamePage {
 		const boardSet = this.boardSet();
 		const showSets = this.showSets();
 
-		if (showSets !== 0) {
+		if (0 !== showSets) {
 			return;
 		}
 
-		if (boardSet.length === 0) {
+		if (0 === boardSet.length) {
 			this.showMessages('There are no sets on the board.');
 
 			return;
 		}
 
-		if (game !== null) {
+		if (null !== game) {
 			const uuid = crypto.randomUUID();
 			const event: OfflineGameEvent = {
 				uuid,
@@ -126,7 +126,7 @@ export class GamePage {
 
 			this.showSets.set(showSets);
 
-			if (showSets === 0) {
+			if (0 === showSets) {
 				clearInterval(this.highlightInterval);
 			}
 		}, 300);
@@ -204,7 +204,7 @@ export class GamePage {
 		const cardColor = this.getEnumKeyByValue(CardColor, color)?.toLocaleLowerCase();
 
 		return {
-			src: `assets/icons/${shapeName}-solid-${cardColor}.png`,
+			src: `icons/${shapeName}-solid-${cardColor}.png`,
 			width,
 			height,
 			particles: {

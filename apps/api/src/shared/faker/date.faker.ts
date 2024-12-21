@@ -19,22 +19,25 @@ export class DateFaker {
 	}
 
 	createdAt(since?: string | Date | number): Date | null {
-		const twoYearsAgo = this.twoYearsAgo();
-		const sinceAsDate = since !== undefined && new Date(since);
+		let sinceAsDate = this.twoYearsAgo();
 
-		if (sinceAsDate !== false && this.checkValidDate(sinceAsDate) === false) {
-			this.logger.error('DateFaker.createdAt(); `since` is not a valid Date');
+		if (since !== undefined) {
+			sinceAsDate = new Date(since);
 
-			return null;
-		} else if (sinceAsDate !== false && sinceAsDate > this.now) {
-			this.logger.error(
-				`DateFaker.createdAt(); \`since\` must be less or equal than ${this.now.toLocaleString()}`,
-			);
+			if (!this.checkValidDate(sinceAsDate)) {
+				this.logger.error('DateFaker.createdAt(); `since` is not a valid Date');
 
-			return null;
+				return null;
+			} else if (sinceAsDate > this.now) {
+				this.logger.error(
+					`DateFaker.createdAt(); \`since\` must be less or equal than ${this.now.toLocaleString()}`,
+				);
+
+				return null;
+			}
 		}
 
-		this.created = faker.date.between({ from: since || twoYearsAgo, to: this.now });
+		this.created = faker.date.between({ from: sinceAsDate, to: this.now });
 
 		return this.created;
 	}
@@ -48,33 +51,41 @@ export class DateFaker {
 	}
 
 	expiresOn(until?: string | Date | number): Date | null {
-		const limitOptions: ManipulationDate = new Map([['day', 1]]);
-		const untilLimit = this.manipulatedDate(limitOptions);
-		const untilAsDate = until !== undefined && new Date(until);
+		const untilAsDate = this.oneDayAfter();
 
-		if (untilAsDate !== false && this.checkValidDate(untilAsDate) === false) {
-			this.logger.error('DateFaker.createdAt(); `until` is not a valid Date');
+		if (until !== undefined) {
+			const untilAsDate = new Date(until);
 
-			return null;
-		} else if (untilAsDate !== false && untilAsDate < this.now) {
-			this.logger.error(
-				`DateFaker.createdAt(); \`until\` must be greater or equal that ${this.now.toLocaleString()}`,
-			);
+			if (!this.checkValidDate(untilAsDate)) {
+				this.logger.error('DateFaker.expiresOn(); `until` is not a valid Date');
 
-			return null;
+				return null;
+			} else if (untilAsDate < this.now) {
+				this.logger.error(
+					`DateFaker.expiresOn(); \`until\` must be greater or equal that ${this.now.toLocaleString()}`,
+				);
+
+				return null;
+			}
 		}
 
-		this.created = faker.date.between({ from: this.now, to: until ?? untilLimit });
+		this.created = faker.date.between({ from: this.now, to: untilAsDate });
 
 		return this.created;
 	}
 
 	private checkValidDate(date: Date): boolean {
-		return date.toString() !== 'Invalid Date';
+		return 'Invalid Date' !== date.toString();
 	}
 
 	private twoYearsAgo(): Date {
 		const limitOptions: ManipulationDate = new Map([['year', -2]]);
+
+		return this.manipulatedDate(limitOptions);
+	}
+
+	private oneDayAfter(): Date {
+		const limitOptions: ManipulationDate = new Map([['day', 1]]);
 
 		return this.manipulatedDate(limitOptions);
 	}

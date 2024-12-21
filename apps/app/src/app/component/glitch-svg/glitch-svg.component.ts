@@ -1,6 +1,8 @@
 import { NgStyle } from '@angular/common';
 import { Component, OnInit, computed, input } from '@angular/core';
 
+import { randomNumberBetween } from '@playsetonline/lib/generator/random-number-between';
+
 @Component({
 	selector: 'app-glitch-svg',
 	templateUrl: './glitch-svg.component.html',
@@ -35,7 +37,7 @@ export class GlitchSvgComponent implements OnInit {
 	}
 
 	private getRandomNumber(max: number): number {
-		return Math.round(Math.random() * (max - 0) + 0);
+		return randomNumberBetween(0, max);
 	}
 
 	private addCssVariable(name: string, value: number): void {

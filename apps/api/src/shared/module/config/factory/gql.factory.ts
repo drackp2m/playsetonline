@@ -19,7 +19,7 @@ export class GqlFactory implements GqlOptionsFactory {
 	) {}
 
 	createGqlOptions(): ApolloDriverConfig {
-		const isProduction = this.configurationService.api.environment === 'production';
+		const isProduction = 'production' === this.configurationService.api.environment;
 
 		return {
 			driver: ApolloDriver,
@@ -59,7 +59,7 @@ export class GqlFactory implements GqlOptionsFactory {
 
 		const accessTokenCookieKey = JwtCookie.access;
 
-		if (cookies[accessTokenCookieKey]) {
+		if (cookies[accessTokenCookieKey] !== undefined) {
 			const cleanCookie = this.cleanJwtAccessTokenCookieUseCase.execute(
 				cookies[accessTokenCookieKey],
 			);

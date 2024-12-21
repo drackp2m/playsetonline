@@ -1,30 +1,27 @@
 {
-	"compileOnSave": false,
+	"compileOnSave": true,
 	"compilerOptions": {
-		"baseUrl": ".",
 		"rootDir": ".",
 		"sourceMap": true,
 		"declaration": false,
-		"moduleResolution": "Node",
+		"moduleResolution": "node",
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
 		"importHelpers": true,
-		"target": "ES2015",
-		"module": "ESNext",
-		"lib": ["ES2020", "DOM"],
+		"target": "es2015",
+		"module": "esnext",
+		"lib": ["es2020", "dom"],
 		"strict": true,
 		"noUncheckedIndexedAccess": true,
-		"noImplicitReturns": true,
-		"noFallthroughCasesInSwitch": true,
-		"forceConsistentCasingInFileNames": true,
-		"noUnusedParameters": true,
 		"skipLibCheck": true,
 		"skipDefaultLibCheck": true,
+		"baseUrl": ".",
 		"paths": {
 			"@package": ["package.json"],
 			"@playsetonline/api-definitions": ["libs/api-definitions/src/index.ts"],
 			"@playsetonline/api-sdk": ["libs/api-sdk/src/index.ts"],
-			"@playsetonline/apollo-definitions": ["libs/api-definitions/src/lib/apollo/operations.ts"]
+			"@playsetonline/apollo-definitions": ["libs/api-definitions/src/lib/apollo/operations.ts"],
+			"@playsetonline/lib/*": ["libs/lib/src/lib/*"]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]
