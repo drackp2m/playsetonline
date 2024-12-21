@@ -31,18 +31,22 @@ describe('DateFaker', () => {
 		});
 
 		it('should return null when `since` date above now is passed', () => {
-			const since = new Date('8050-10-20');
+			jest.useFakeTimers().setSystemTime(new Date('2024-12-21T22:29:42.000Z'));
 
-			const result = util.createdAt(since.getTime());
+			const since = new Date('2024-12-21T22:29:42.001Z');
+
+			const result = util.createdAt(since);
 
 			expect(result).toBeNull();
 		});
 
 		it('should return Date between now and `since` when `since` date below now is passed', () => {
+			jest.useFakeTimers().setSystemTime(new Date('2024-12-21T22:29:42.000Z'));
+
 			const now = new Date();
 			const since = new Date('1731-10-20');
 
-			const result = util.createdAt(since.getTime());
+			const result = util.createdAt(since);
 
 			expect(result?.getTime()).toBeGreaterThanOrEqual(since.getTime());
 			expect(result?.getTime()).toBeLessThanOrEqual(now.getTime());
@@ -57,6 +61,8 @@ describe('DateFaker', () => {
 		});
 
 		it('should return a date above the creation date', () => {
+			jest.useFakeTimers().setSystemTime(new Date('2024-12-21T22:29:42.000Z'));
+
 			const now = new Date();
 
 			const createdAt = util['createdAt']();
@@ -81,24 +87,23 @@ describe('DateFaker', () => {
 		});
 
 		it('should return null when `until` date below now is passed', () => {
-			const since = new Date('2002-10-20');
+			jest.useFakeTimers().setSystemTime(new Date('2024-12-21T22:29:42.000Z'));
 
-			const result = util.expiresOn(since.getTime());
+			const since = new Date('2024-12-20T22:29:42.000Z');
+
+			const result = util.expiresOn(since);
 
 			expect(result).toBeNull();
 		});
 
 		it('should return a date between now and specified date', () => {
+			jest.useFakeTimers().setSystemTime(new Date('2024-12-21T22:29:42.000Z'));
+
 			const now = new Date();
 
-			const until = new Date('8050-10-20');
+			const until = new Date('2025-12-21T22:29:42.000Z');
 			const result = util.expiresOn(until);
 
-			/**
-			 * FixMe => this sometimes fails
-			 * Expected: >= 1734815715630
-			 * Received:    1734742971316
-			 */
 			expect(result?.getTime()).toBeGreaterThanOrEqual(now.getTime());
 			expect(result?.getTime()).toBeLessThanOrEqual(until.getTime());
 		});

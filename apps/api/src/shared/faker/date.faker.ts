@@ -51,10 +51,10 @@ export class DateFaker {
 	}
 
 	expiresOn(until?: string | Date | number): Date | null {
-		const untilAsDate = this.oneDayAfter();
+		let untilAsDate = this.oneDayAfter();
 
 		if (until !== undefined) {
-			const untilAsDate = new Date(until);
+			untilAsDate = new Date(until);
 
 			if (!this.checkValidDate(untilAsDate)) {
 				this.logger.error('DateFaker.expiresOn(); `until` is not a valid Date');
