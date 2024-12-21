@@ -11,10 +11,10 @@ export const randomNumberBetween = (min: number, max: number): number => {
     const randomNumber = Math.floor((random / (0xffffffff + 1)) * (max - min + 1)) + min;
 
     return randomNumber;
-  } else if (typeof require !== 'undefined') {
+  } else if (typeof require !== 'undefined' && process.versions && process.versions.node) {
     const crypto = require('crypto');
     const random = crypto.randomInt(min, max + 1);
-    return random;
+		return random;
   } else {
     throw new Error('No suitable crypto API available.');
   }

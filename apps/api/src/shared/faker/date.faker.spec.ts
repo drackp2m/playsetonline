@@ -27,7 +27,7 @@ describe('DateFaker', () => {
 		it('should return null when invalid `since` date is passed', () => {
 			const result = util.createdAt('invalid');
 
-			expect(result).toStrictEqual(null);
+			expect(result).toBeNull();
 		});
 
 		it('should return null when `since` date above now is passed', () => {
@@ -35,7 +35,7 @@ describe('DateFaker', () => {
 
 			const result = util.createdAt(since.getTime());
 
-			expect(result).toStrictEqual(null);
+			expect(result).toBeNull();
 		});
 
 		it('should return Date between now and `since` when `since` date below now is passed', () => {
@@ -77,7 +77,7 @@ describe('DateFaker', () => {
 		it('should return null when invalid `until` date is passed', () => {
 			const result = util.expiresOn('invalid');
 
-			expect(result).toStrictEqual(null);
+			expect(result).toBeNull();
 		});
 
 		it('should return null when `until` date below now is passed', () => {
@@ -85,7 +85,7 @@ describe('DateFaker', () => {
 
 			const result = util.expiresOn(since.getTime());
 
-			expect(result).toStrictEqual(null);
+			expect(result).toBeNull();
 		});
 
 		it('should return a date between now and specified date', () => {
@@ -94,6 +94,11 @@ describe('DateFaker', () => {
 			const until = new Date('8050-10-20');
 			const result = util.expiresOn(until);
 
+			/**
+			 * FixMe => this sometimes fails
+			 * Expected: >= 1734815715630
+			 * Received:    1734742971316
+			 */
 			expect(result?.getTime()).toBeGreaterThanOrEqual(now.getTime());
 			expect(result?.getTime()).toBeLessThanOrEqual(until.getTime());
 		});

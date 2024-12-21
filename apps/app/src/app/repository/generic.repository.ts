@@ -13,21 +13,20 @@ import {
 import { MigrationHandler } from './migration-handler';
 
 export class GenericRepository<T extends DBSchema> {
+	protected migrationHandler = new MigrationHandler<T>();
 	private dbName = 'play_set_online';
 	private dbPromise = this.getDbPromise();
-	private currentTransaction: IDBPTransaction<T, StoreNames<T>[], 'readwrite' | 'readonly'> | null =
-		null;
-	protected migrationHandler = new MigrationHandler<T>();
+	private transaction: IDBPTransaction<T, StoreNames<T>[], 'readwrite' | 'readonly'> | null = null;
 
 	async beginTransaction(storeNames: StoreNames<T>[]): Promise<void> {
 		const db = await this.dbPromise;
-		this.currentTransaction = db.transaction(storeNames, 'readwrite');
+		this.transaction = db.transaction(storeNames, 'readwrite');
 	}
 
 	async commitTransaction(): Promise<void> {
-		if (this.currentTransaction) {
-			await this.currentTransaction.done;
-			this.currentTransaction = null;
+		if (this.transaction) {
+			await this.transaction.done;
+			this.transaction = null;
 		}
 	}
 
@@ -79,7 +78,7 @@ export class GenericRepository<T extends DBSchema> {
 		mode: M,
 		operation: (tx: IDBPTransaction<T, StoreNames<T>[], M>) => Promise<R>,
 	): Promise<R> {
-		const tx = (this.currentTransaction ??
+		const tx = (this.transaction ??
 			(await this.dbPromise).transaction(storeNames, mode)) as IDBPTransaction<
 			T,
 			StoreNames<T>[],
@@ -87,7 +86,7 @@ export class GenericRepository<T extends DBSchema> {
 		>;
 
 		const result = await operation(tx);
-		if (!this.currentTransaction) {
+		if (!this.transaction) {
 			await tx.done;
 		}
 

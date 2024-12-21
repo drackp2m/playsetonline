@@ -1,5 +1,5 @@
 export default {
-	displayName: 'playsetonline-lib',
+	displayName: 'lib',
 	preset: '../../jest.preset.js',
 	testEnvironment: 'node',
 	transform: {

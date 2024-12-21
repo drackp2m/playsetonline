@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { CardColor, CardShading, CardShape } from '@playsetonline/api-definitions';
-import { randomNumberBetween } from '@playsetonline/lib/generator/random-number-between';
+import { randomNumberBetween } from '@playsetonline/lib';
 
 import { Card } from '../../../definition/card.interface';
 import { AddCardsToBoardError, AddCardsToBoardException } from '../error/add-cards-to-board.error';

@@ -18,7 +18,7 @@ export class GameParticipant {
 	createdAt: Date = new GenerateNowDateUseCase().execute();
 
 	constructor(init?: Partial<GameParticipant>) {
-		if (init) {
+		if (init !== undefined) {
 			Object.assign(this, init);
 		}
 	}

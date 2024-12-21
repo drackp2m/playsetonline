@@ -1,4 +1,4 @@
-import { randomNumberBetween } from '@playsetonline/lib/generator/random-number-between';
+import { randomNumberBetween } from '@playsetonline/lib';
 
 export class ShuffleArrayUseCase {
 	execute<T>(array: T[]): T[] {

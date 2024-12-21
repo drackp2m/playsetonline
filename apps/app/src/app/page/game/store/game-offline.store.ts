@@ -78,11 +78,13 @@ export class GameOfflineStore extends signalStore(
 	}
 
 	async selectCard(card: Card): Promise<void> {
-		const game = this.game();
+		let game = this.game();
 
 		if (null === game) {
 			return;
 		}
+
+		game = { ...game };
 
 		const currentSelectedCards = this.selectedCards();
 		const selectedCards = this.gameService.toggleCardSelection(card, currentSelectedCards);
@@ -108,7 +110,7 @@ export class GameOfflineStore extends signalStore(
 
 				await this.offlineGameRepository.set('offline_game', game.uuid, game);
 
-				patchState(this, { game: { ...game } });
+				patchState(this, { game });
 
 				this.searchSetOnBoard();
 			}
@@ -133,17 +135,19 @@ export class GameOfflineStore extends signalStore(
 
 				this.offlineGameRepository.set('offline_game', game.uuid, game);
 
-				patchState(this, { game: { ...game } });
+				patchState(this, { game });
 			}
 		}
 	}
 
 	async addCardsToBoard(): Promise<void> {
-		const game = this.game();
+		let game = this.game();
 
 		if (null === game) {
 			return;
 		}
+
+		game = { ...game };
 
 		const boardSet = this.boardSet();
 		const sets = this.sets();
@@ -182,7 +186,7 @@ export class GameOfflineStore extends signalStore(
 
 			await this.offlineGameRepository.commitTransaction();
 
-			patchState(this, { game: { ...game } });
+			patchState(this, { game });
 
 			this.searchSetOnBoard();
 		} catch (error) {

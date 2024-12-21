@@ -21,7 +21,7 @@
 			"@playsetonline/api-definitions": ["libs/api-definitions/src/index.ts"],
 			"@playsetonline/api-sdk": ["libs/api-sdk/src/index.ts"],
 			"@playsetonline/apollo-definitions": ["libs/api-definitions/src/lib/apollo/operations.ts"],
-			"@playsetonline/lib/*": ["libs/lib/src/lib/*"]
+			"@playsetonline/lib": ["libs/lib/src/index.ts"]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]
