@@ -3,11 +3,6 @@
 
 @use './scss/main';
 
-// app-you-won,
-// #confetti {
-// 	display: none;
-// }
-
 html {
 	cursor: default;
 
@@ -63,17 +58,15 @@ h6 {
 	font-size: var(--font-size-sm);
 }
 
-#confetti {
-	position: relative;
-	z-index: 100;
-}
-
 button,
 .btn,
 a {
-	cursor: default;
-
 	&:hover {
 		opacity: 0.8;
 	}
+}
+
+#confetti {
+	position: relative;
+	z-index: 100;
 }

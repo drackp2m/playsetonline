@@ -174,8 +174,15 @@ export default [
 			yoda: ['warn', 'always'],
 			'no-implicit-coercion': ['warn', { boolean: true }],
 			'no-extra-boolean-cast': 'warn',
-			'@typescript-eslint/strict-boolean-expressions': 'warn',
 			'@typescript-eslint/no-unnecessary-boolean-literal-compare': 'warn',
+			'@typescript-eslint/strict-boolean-expressions': [
+				'warn',
+				{
+					allowNullableObject: false,
+					allowNumber: false,
+					allowString: false,
+				},
+			],
 		},
 	},
 	{
